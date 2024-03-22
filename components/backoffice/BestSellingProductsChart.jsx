@@ -44,10 +44,7 @@ export default function BestSellingProductsChart({sales}) {
     ],
   };
   return (
-    <div className="dark:bg-slate-700 bg-slate-50 p-8 rounded-lg shadow-xl">
-    <h2 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-50">
-      Best Selling Products
-    </h2>
+    <div className="dark:bg-slate-700 p-8 rounded-lg ">
     {/* Chart */}
     <div className="p-4 flex items-center justify-center" style={{height:"400px"}}>
       <Pie data={chartData} />
