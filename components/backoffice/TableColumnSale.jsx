@@ -26,12 +26,12 @@ export const tableColumnSale = [
   },
 
   {
-    accessorKey: "date",
+    accessorKey: "datePicker",
     header: "Date",
   },
   {
     accessorKey: "Total",
-    header: "total",
+    header: "Total",
   },
 
 ];

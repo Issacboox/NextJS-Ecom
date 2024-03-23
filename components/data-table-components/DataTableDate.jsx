@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   Table,
@@ -25,17 +25,19 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { DataDateTableToolbar } from "./DataDateTableToolbar";
+
 export default function DataTableDate({
   columns,
   data,
-  filterKeys = ["date"],
+  filterKeys = ["datePicker"],
 }) {
-  const [filteredData, setFilteredData] = useState(data);
+  const [filteredData, setFilteredData] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState({});
   const [columnFilters, setColumnFilters] = useState([]);
   const [sorting, setSorting] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(new Date());
+
   const monthNames = [
     "January",
     "February",
@@ -51,37 +53,53 @@ export default function DataTableDate({
     "December",
   ];
 
-  const filteredDate = useMemo(() => {
-    if (!columnFilters.length) return data;
+  const filterData = () => {
+    const filtered = data.filter((item) => {
+      const saleDate = new Date(Date.parse(item.createdAt));
+      return (
+        saleDate.getMonth() === selectedMonth.getMonth() &&
+        saleDate.getFullYear() === selectedMonth.getFullYear()
+      );
+    });
 
-    return data
-      .filter((item) =>
+    if (columnFilters.length > 0) {
+      return filtered.filter((item) =>
         columnFilters.every((filter) =>
           item[filter.id]?.toLowerCase().includes(filter.value.toLowerCase())
         )
-      )
-      .filter((item) => {
-        const saleDate = new Date(Date.parse(item.createdAt));
-        return (
-          saleDate.getMonth() === selectedMonth.getMonth() &&
-          saleDate.getFullYear() === selectedMonth.getFullYear()
-        );
-      });
-  }, [columnFilters, data, selectedMonth]);
+      );
+    }
+
+    return filtered;
+  };
+
+  useEffect(() => {
+    setFilteredData(filterData());
+  }, [selectedMonth, columnFilters, data]);
+
   const handleFilterDataChange = (filteredData) => {
     setFilteredData(filteredData);
   };
+
+
   const monthlySalesData = useMemo(() => {
     return filteredData.reduce((acc, sale) => {
       const saleDate = new Date(Date.parse(sale.createdAt));
-      const month = saleDate.getMonth(); // Get the month (0-indexed)
-      const date = saleDate.getDate(); // Get the date of the month
-      const year = saleDate.getFullYear(); // Get the year
-      const key = `${date} ${month + 1} ${year}`; // Key for grouping by date in the format "date month year"
-      acc[key] = (acc[key] || 0) + sale.total; // Accumulate total sales for each date
+      const key = `${saleDate.getDate()} ${
+        saleDate.getMonth() + 1
+      } ${saleDate.getFullYear()}`;
+      acc[key] = (acc[key] || 0) + sale.total;
       return acc;
     }, {});
   }, [filteredData]);
+
+  const tableData = Object.keys(monthlySalesData).map((key) => {
+    const [date, month, year] = key.split(" ");
+    return {
+      date: `${date} ${monthNames[parseInt(month) - 1]} ${year}`,
+      total: monthlySalesData[key],
+    };
+  });
 
   const table = useReactTable({
     data: filteredData,
@@ -105,36 +123,38 @@ export default function DataTableDate({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const tableData = Object.keys(monthlySalesData).map((key) => {
-    const [date, month, year] = key.split(" ");
-    return {
-      date: `${date} ${monthNames[parseInt(month) - 1]} ${year}`,
-      total: monthlySalesData[key],
-    };
-  });
-
   return (
     <div className="space-y-4 text-black dark:text-white">
-      <DataDateTableToolbar table={table} filterKeys={filterKeys} data={data} />
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Date</TableHead>
-              <TableHead>Total</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {tableData.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.total} Bath</TableCell>
+      <DataDateTableToolbar
+  data={data}
+  onFilterDataChange={handleFilterDataChange} // Make sure this prop is passed correctly
+/>
+
+
+      {filteredData.length === 0 ? (
+        <p className="text-red-800 font-semibold">
+          No record found for selected month.
+        </p>
+      ) : (
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Date</TableHead>
+                <TableHead>Total</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-      <DataTablePagination table={table} />
+            </TableHeader>
+            <TableBody>
+              {tableData.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell>{row.date}</TableCell>
+                  <TableCell>{row.total} Bath</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,60 +1,39 @@
-import { Cross2Icon } from "@radix-ui/react-icons";
-import { Button } from "@/components/ui/button";
-import { DataTableViewOptions } from "./DataTableViewOptions";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import { DatePicker, Space } from 'antd';
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+export function DataDateTableToolbar({ data, onFilterDataChange }) {
+  const [noRecordsFound, setNoRecordsFound] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
 
-export function DataDateTableToolbar({ table, filterKeys, data }) {
-  const isFiltered = filterKeys.some(
-    (key) => table.getState().columnFilters[key]?.length > 0
-  );
+  const handleDateChange = (date, dateString) => {
+    setSelectedDate(date); // Update selected date state
 
-  const handleInputChange = (key, value) => {
-    table.getColumn(key)?.setFilterValue(value);
+    if (date) {
+      const selectedMonth = date.month() + 1;
+      const selectedYear = date.year();
+      const filteredData = data.filter((item) => {
+        const saleDate = new Date(item.createdAt); // Use the Date object directly
+        return saleDate.getMonth() + 1 === selectedMonth && saleDate.getFullYear() === selectedYear;
+      });
+
+      if (filteredData.length === 0) {
+        setNoRecordsFound(true);
+      } else {
+        setNoRecordsFound(false);
+        // Pass the filtered data back to the parent component
+        onFilterDataChange(filteredData);
+      }
+    }
   };
-
-  const handleResetClick = () => {
-    filterKeys.forEach((key) => {
-      table.getColumn(key)?.setFilterValue("");
-    });
-  };
-
-  const handleDateChange = (date) => {
-    const selectedMonth = date.getMonth() + 1;
-    const selectedYear = date.getFullYear();
-    const filteredData = data.filter((item) => {
-      const saleDate = new Date(Date.parse(item.createdAt));
-      return saleDate.getMonth() + 1 === selectedMonth && saleDate.getFullYear() === selectedYear;
-    });
-    // Pass the filtered data back to the parent component
-    onFilterDataChange(filteredData);
-  };
-  
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
-        <DatePicker
-          selected={new Date()}
-          onChange={handleDateChange}
-          dateFormat="MM/yyyy"
-          showMonthYearPicker
-          className="h-8 w-[150px] lg:w-[250px] border-gray-300 border rounded-md px-2"
-        />
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            onClick={handleResetClick}
-            className="h-8 px-2 lg:px-3"
-          >
-            Reset
-            <Cross2Icon className="ml-2 h-4 w-4" />
-          </Button>
-        )}
+        <Space direction="vertical">
+          <DatePicker onChange={handleDateChange} picker="month" value={selectedDate} />
+        </Space>
       </div>
-      <DataTableViewOptions table={table} />
+      {noRecordsFound && <p className='text-red-800 font-semibold'>No record found for selected month.</p>}
     </div>
   );
 }

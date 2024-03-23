@@ -52,11 +52,11 @@ export default function Sidebar({ showSidebar, setShowSidebar }) {
       icon: Users2,
       href: "/dashboard/customers",
     },
-    {
-      title: "Markets",
-      icon: Warehouse,
-      href: "/dashboard/markets",
-    },
+    // {
+    //   title: "Markets",
+    //   icon: Warehouse,
+    //   href: "/dashboard/markets",
+    // },
     // {
     //   title: "Farmers",
     //   icon: UserSquare2,

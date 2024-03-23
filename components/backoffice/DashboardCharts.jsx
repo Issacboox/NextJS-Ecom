@@ -1,5 +1,5 @@
-"use client";
-import React, { useState } from "react";
+"use client"
+import { useState } from "react";
 import BestSellingProductsChart from "./BestSellingProductsChart";
 import DataTableDate from "../data-table-components/DataTableDate";
 import { tableColumnSale } from "./TableColumnSale";
@@ -7,6 +7,11 @@ import MonthlySalesChart from "./WeeklySalesChart";
 
 export default function DashboardCharts({ sales }) {
   const [activeTab, setActiveTab] = useState("salesBest");
+  const [filteredData, setFilteredData] = useState([]);
+  
+  const handleFilterDataChange = (data) => {
+    setFilteredData(data);
+  };
 
   const tabs = [
     {
@@ -17,7 +22,8 @@ export default function DashboardCharts({ sales }) {
     {
       title: "Sale Report Month",
       type: "monthSaleReport",
-      component: <DataTableDate columns={tableColumnSale} data={sales} />,
+      component: <DataTableDate data={sales} onFilterDataChange={handleFilterDataChange} />
+      ,
     },
   ];
 

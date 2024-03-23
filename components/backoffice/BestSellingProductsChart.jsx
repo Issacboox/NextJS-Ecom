@@ -28,10 +28,12 @@ export default function BestSellingProductsChart({sales}) {
         label: "",
         data,
         backgroundColor: [
-          "rgb(182, 243, 231)",
-          "rgb(249, 165, 239)",
-          "rgb(202, 166, 247)",
-          "rgba(0, 0, 0, 0.7)",
+          "rgba(210, 94, 48, 0.9)",
+          "rgba(162, 0, 32, 0.9)",
+          "rgba(4, 68, 162, 0.9)",
+          "rgba(14, 131, 64, 0.9)",
+          "rgba(210, 202, 48, 0.9)",
+          
         ],
         borderColor: [
           "rgb(251, 248, 254)",
@@ -44,9 +46,9 @@ export default function BestSellingProductsChart({sales}) {
     ],
   };
   return (
-    <div className="dark:bg-slate-700 p-8 rounded-lg ">
+    <div className="dark:bg-slate-700 p-4 rounded-lg ">
     {/* Chart */}
-    <div className="p-4 flex items-center justify-center" style={{height:"400px"}}>
+    <div className=" flex items-center justify-center" style={{height:"350px"}}>
       <Pie data={chartData} />
     </div>
   </div>
