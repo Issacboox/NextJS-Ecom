@@ -29,16 +29,16 @@ export default async function ProductDetailPage({ params: { slug } }) {
         <div className="col-span-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl lg:text-3xl font-semibold">
-              {product.title}
+              {product.title}  
             </h2>
             <ProductShareButton urlToShare={urlToShare} />
           </div>
           <div className="border-b border-gray-500">
             <p className="py-2 ">{product.description}</p>
             <div className="flex items-center gap-8 mb-4">
-              <p>SKU: {product.sku}</p>
+              <p>product code: {product.productCode} </p>
               <p className="bg-lime-200 py-1.5 px-4 rounded-full text-slate-900 ">
-                <b>Stock</b>: {product.productStock}
+                <b>Stock</b>: {product.productStock} {product.unit}
               </p>
             </div>
           </div>
@@ -51,12 +51,12 @@ export default async function ProductDetailPage({ params: { slug } }) {
             </div>
             <p className="flex items-center">
               <Tag className="w-5 h-5 text-slate-400 me-2" />
-              <span>Save ... right now</span>
-            </p>
+              <span></span>
+            </p> 
           </div>
-          <div className="flex justify-between items-center py-6">
+          <div className="flex items-center justify-end py-6">
             <AddToCartButton product={product} />
-            <p>Something Here</p>
+            
           </div>
         </div>
         

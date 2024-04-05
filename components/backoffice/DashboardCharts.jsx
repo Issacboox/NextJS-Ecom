@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react";
 import BestSellingProductsChart from "./BestSellingProductsChart";
-import DataTableDate from "../data-table-components/DataTableDate";
+import DataTableDate from "../data-table-components/for-sale-report/DataTableDate";
 import { tableColumnSale } from "./TableColumnSale";
 import MonthlySalesChart from "./WeeklySalesChart";
 

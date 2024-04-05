@@ -101,7 +101,7 @@ export default function NewProductForm({
           register={register}
           errors={errors}
         />
-        <TextInput
+        {/* <TextInput
           label="Product SKU (STOCK KEEPING UNIT)"
           name="sku"
           register={register}
@@ -115,7 +115,7 @@ export default function NewProductForm({
           register={register}
           errors={errors}
           className="w-full"
-        />
+        /> */}
         <TextInput
           label="Product Price (Before Discount)"
           name="productPrice"
@@ -140,14 +140,6 @@ export default function NewProductForm({
           type="number"
           className="w-full"
         />
-        {/* <SelectInput
-          label="Unit of Measurement"
-          name="unit"
-          register={register}
-          errors={errors}
-          className="w-full"
-          options={unitName}
-        /> */}
         <TextInput
           label="Unit of Measurement(eg Kilograms)"
           name="unit"
@@ -171,13 +163,13 @@ export default function NewProductForm({
           className="w-full"
           options={farmers}
         />
-        <ToggleInput
+        {/* <ToggleInput
           label="Supports Wholesale Selling"
           name="isWholesale"
           trueTitle="Supported"
           falseTitle="Not Supported"
           register={register}
-        />
+        /> */}
 
         {isWholesale && (
           <>

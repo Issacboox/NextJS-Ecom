@@ -8,8 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DataTablePagination } from "./DataTablePagination";
-import { DataTableToolbar } from "./DataTableToolbar";
+import { DataTablePagination } from "../DataTablePagination";
+import { DataTableToolbar } from "../DataTableToolbar";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -155,6 +155,7 @@ export default function DataTableDate({
           </Table>
         </div>
       )}
+      <DataTablePagination table={table}/>
     </div>
   );
 }

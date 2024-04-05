@@ -25,8 +25,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
-import { DataTablePagination } from "./DataTablePagination";
-import { DataTableToolbar } from "./DataTableToolbar";
+import { DataTablePagination } from "../DataTablePagination";
+import { DataTableToolbar } from "../DataTableToolbar";
 
 export default function DataTableSale({
   columns,

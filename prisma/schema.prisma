@@ -65,10 +65,8 @@ model Market {
   logoUrl     String?
   description String?
   isActive    Boolean
-
   categoryIds String[]   @db.ObjectId
   categories  Category[] @relation(fields: [categoryIds], references: [id])
-
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 }
@@ -81,9 +79,9 @@ model Product {
   productImages  String[]
   description    String?
   isActive       Boolean
-  isWholesale    Boolean
-  sku            String?
-  barcode        String?
+  // isWholesale    Boolean
+  // sku            String?
+  // barcode        String?
   productCode    String?
   unit           String?
   productPrice   Float

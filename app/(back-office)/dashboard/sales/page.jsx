@@ -5,7 +5,7 @@ import React from "react";
 import { columns } from "./columns";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
-import DataTableSale from "@/components/data-table-components/DataTableSale";
+import DataTableSale from "@/components/data-table-components/for-sale-report/DataTableSale";
 
 export default async function Sales() {
   const session = await getServerSession(authOptions);
